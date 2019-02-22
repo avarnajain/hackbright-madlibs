@@ -1,0 +1,18 @@
+{% extends 'base_template.html' %}
+
+<!doctype html>
+<html>
+<head>
+  {% block title %}A madlib for ya{% endblock %}
+</head>
+    {% block p1 %}
+    THIS IS THE SECOND TEMPLATE <br /> {{ arg_dict['color'] }} {{ arg_dict['noun'] }} sitting in the Hackbright Lab.
+    When {{ arg_dict['person'] }} went to pick it up, it burst into flames in a totally 
+    {{', '.join(adj_list) }}
+
+    way. <br/>
+
+{% endblock %}
+
+
+</html>
