@@ -1,13 +1,17 @@
+{% extends 'base_template.html' %}
+
 <!doctype html>
 <html>
 <head>
   <title>A madlib for ya</title>
 </head>
-<body>
+{% block p1 %}
     There once was a {{ arg_dict['color'] }} {{ arg_dict['noun'] }} sitting in the Hackbright Lab.
-    When {{ arg_dict['person'] }} went to pick it up, it burst into flames in a totally {{adj_list}} way. <br/>
-    {{arg_dict}}
-    {{adj_list}}
+    When {{ arg_dict['person'] }} went to pick it up, it burst into flames in a totally 
+    {{', '.join(adj_list) }}
 
-</body>
+    way. <br/>
+
+
+{% endblock %}
 </html>

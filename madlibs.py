@@ -1,8 +1,10 @@
 """A madlib game that compliments its users."""
 
-from random import choice
+from random import choice, choices
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, flash
+
+from time import sleep
 
 # "__name__" is a special Python variable for the name of the current module.
 # Flask wants to know this to know what any imported things are relative to.
@@ -14,12 +16,13 @@ AWESOMENESS = [
     'smashing', 'lovely',
 ]
 
+app.secret_key = 'testing-one'
 
 @app.route('/')
 def start_here():
     """Display homepage."""
-
-    return "Hi! This is the home page."
+    sleep(3)
+    return redirect('http://localhost:5000/hello') 
 
 
 @app.route('/hello')
@@ -35,11 +38,11 @@ def greet_person():
 
     player = request.args.get("person")
 
-    compliment = choice(AWESOMENESS)
+    compliments = choices(AWESOMENESS, k=3)
 
     return render_template("compliment.html",
                            person=player,
-                           compliment=compliment)
+                           compliments=compliments)
 
 
 @app.route('/game')
@@ -53,22 +56,21 @@ def show_madlib_form():
         return render_template('game.html')
 
 
-@app.route('/madlib')
+@app.route('/madlib', methods=["POST"])
 def show_madlib():
 
-    arg_dict = request.args
-    arg_dict = request.args.items()
-    adj_list = []
+    arg_dict = request.form
+    adj_list = [value for key, value in arg_dict.items(multi=True) if key=='adjective']
 
-    for key in arg_dict:
-        if 'adjective' in key:
-            adj_list.append(arg_dict)
+    # create a list holding all possible html things
+    # "choice" that, store as variable
+    # pass variable into render_template
 
-       
-    # adjective_list = arg_dict.get('adjective')
-    # [adj_tuple arg_dict.get('adjective')]
+    MADLIB_TEMPLATES = ['madlib.html', 'madlib_2.html']
 
-    return render_template('madlib.html', 
+    template_to_use = choice(MADLIB_TEMPLATES)
+
+    return render_template(template_to_use, 
         arg_dict=arg_dict, adj_list = adj_list)
 
 if __name__ == '__main__':
